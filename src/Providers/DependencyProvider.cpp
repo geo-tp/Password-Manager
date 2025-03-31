@@ -8,7 +8,7 @@ DependencyProvider::DependencyProvider(IView& view, IInput& input)
       cryptoService(),
       sdService(),
       nvsService(),
-      usbService(),
+      keyboardService(),
       ledService(),
       inactivityManager(view),
       verticalSelector(view, input, inactivityManager),
@@ -26,9 +26,9 @@ DependencyProvider::DependencyProvider(IView& view, IInput& input)
                       jsonTransformer, modelTransformer),
       entryController(view, input, horizontalSelector, verticalSelector, fieldActionSelector,
                       confirmationSelector, stringPromptSelector, entryService, cryptoService, 
-                      usbService, ledService, nvsService, modelTransformer),
-      utilityController(view, input, horizontalSelector, verticalSelector,  fieldEditorSelector, 
-                        stringPromptSelector, confirmationSelector, usbService, ledService, nvsService,
+                      keyboardService, ledService, nvsService, modelTransformer),
+      utilityController(view, input, horizontalSelector, verticalSelector, fieldEditorSelector, 
+                        stringPromptSelector, confirmationSelector, keyboardService, ledService, nvsService,
                         sdService, timeTransformer)
       {}
 
@@ -50,7 +50,7 @@ EntryService& DependencyProvider::getEntryService() { return entryService; }
 CategoryService& DependencyProvider::getCategoryService() { return categoryService; }
 SdService& DependencyProvider::getSdService() { return sdService; }
 NvsService& DependencyProvider::getNvsService() { return nvsService; }
-UsbService& DependencyProvider::getUsbService() { return usbService; }
+KeyboardService& DependencyProvider::getKeyboardService() { return keyboardService; }
 LedService& DependencyProvider::getLedService() { return ledService; }
 
 // Accessors for transformers

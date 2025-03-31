@@ -1,7 +1,7 @@
 #ifndef UTILITY_CONTROLLER_H
 #define UTILITY_CONTROLLER_H
 
-#include <Services/UsbService.h>
+#include <Services/KeyboardService.h>
 #include <Services/LedService.h>
 #include <Services/NvsService.h>
 #include <Services/SdService.h>
@@ -27,7 +27,7 @@ public:
                     FieldEditorSelector& fieldEditorSelector,
                     StringPromptSelector& stringPromptSelector,
                     ConfirmationSelector& confirmationSelector,
-                    UsbService& usbService,
+                    KeyboardService& keyboardService,
                     LedService& ledService,
                     NvsService& nvsService,
                     SdService& sdService,
@@ -44,7 +44,7 @@ public:
 private:
     IView& display;
     IInput& input;
-    UsbService& usbService;
+    KeyboardService& keyboardService;
     LedService& ledService;
     NvsService& nvsService;
     SdService& sdService;

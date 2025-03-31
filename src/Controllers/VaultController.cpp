@@ -204,6 +204,8 @@ bool VaultController::handleVaultLoading() {
     switch (action) {
         case ActionEnum::LoadSdVault:
             return loadSdVault();
+        default:
+            return false; // Added default case to handle all possible paths
     }
 }
 

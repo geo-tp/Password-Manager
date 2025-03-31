@@ -8,7 +8,7 @@
 #include <Selectors/ConfirmationSelector.h>
 #include <Services/EntryService.h>
 #include <Services/CryptoService.h>
-#include <Services/UsbService.h>
+#include <Services/KeyboardService.h>
 #include <Services/LedService.h>
 #include <Services/NvsService.h>
 #include <Enums/ActionEnum.h>
@@ -32,7 +32,7 @@ public:
                     StringPromptSelector& stringPromptSelector,
                     EntryService& entryService,
                     CryptoService& cryptoService,
-                    UsbService& usbService,
+                    KeyboardService& keyboardService,
                     LedService& ledService,
                     NvsService& nvsService,
                     ModelTransformer& modelTransformer);
@@ -56,11 +56,11 @@ private:
     StringPromptSelector& stringPromptSelector;
     EntryService& entryService;
     CryptoService& cryptoService;
-    UsbService& usbService;
+    KeyboardService& keyboardService;
     LedService& ledService;
     NvsService& nvsService;
     ModelTransformer& modelTransformer;
-
+    
     GlobalState& globalState = GlobalState::getInstance();
 };
 

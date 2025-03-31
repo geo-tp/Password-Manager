@@ -8,7 +8,7 @@
 #include "Services/CategoryService.h"
 #include "Services/SdService.h"
 #include "Services/NvsService.h"
-#include "Services/UsbService.h"
+#include "Services/KeyboardService.h"
 #include "Services/LedService.h"
 #include "Transformers/JsonTransformer.h"
 #include "Transformers/ModelTransformer.h"
@@ -45,7 +45,7 @@ public:
     CategoryService& getCategoryService();
     SdService& getSdService();
     NvsService& getNvsService();
-    UsbService& getUsbService();
+    KeyboardService& getKeyboardService();
     LedService& getLedService();
 
     // Transformers
@@ -83,7 +83,7 @@ private:
     CategoryService categoryService;
     SdService sdService;
     NvsService nvsService;
-    UsbService usbService;
+    KeyboardService keyboardService;
     LedService ledService;
 
     // Transformers

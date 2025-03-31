@@ -31,11 +31,15 @@ private:
     std::string nvsScreenBrightness = "screenBright";
     std::string nvsInactivityScreenTimeout = "screenOffTime";
     std::string nvsInactivityLockTimeout = "vaultLockTime";
+    std::string nvsBleEnabled = "bleEnabled";
+    std::string nvsBleDeviceName = "bleDeviceName";
 
     // User config
     std::string selectedKeyboardLayout = "";
     uint8_t selectedScreenBrightness = 140;
     std::string defaultVaultPath = "/vaults";
+    bool bleEnabled = false;
+    std::string bleDeviceName = "Cardputer Keyboard";
 
     // Last Vault
     std::string loadedVaultPath = "";
@@ -106,11 +110,15 @@ public:
     const std::string& getNvsScreenBrightness() const { return nvsScreenBrightness; }
     const std::string& getNvsInactivityScreenTimeout() const { return nvsInactivityScreenTimeout; }
     const std::string& getNvsInactivityLockTimeout() const { return nvsInactivityLockTimeout; }
+    const std::string& getNvsBleEnabled() const { return nvsBleEnabled; }
+    const std::string& getNvsBleDeviceName() const { return nvsBleDeviceName; }
 
     // Accesseurs pour config
     const std::string& getSelectedKeyboardLayout() const { return selectedKeyboardLayout; }
     const uint8_t getSelectedScreenBrightness() const { return selectedScreenBrightness; }
     const std::string& getDefaultVaultPath() const { return defaultVaultPath; }
+    bool getBleEnabled() const { return bleEnabled; }
+    const std::string& getBleDeviceName() const { return bleDeviceName; }
 
     // Mutateurs pour la configuration NVS
     void setNvsNamespace(const std::string& ns) { nvsNamespace = ns; }
@@ -119,11 +127,15 @@ public:
     void setNvsScreenBrightness(const std::string& key) { nvsScreenBrightness = key; }
     void setNvsInactivityScreenTimeout(const std::string& key) { nvsInactivityScreenTimeout = key; }
     void setNvsInactivityLockTimeout(const std::string& key) { nvsInactivityLockTimeout = key; }
+    void setNvsBleEnabled(const std::string& key) { nvsBleEnabled = key; }
+    void setNvsBleDeviceName(const std::string& key) { nvsBleDeviceName = key; }
 
     // Mutateurs config
     void setSelectedKeyboardLayout(const std::string& key) { selectedKeyboardLayout = key; }
     void setSelectedScreenBrightness(uint8_t br) { selectedScreenBrightness = br; }
     void setDefaultVaultPath(const std::string& p) { defaultVaultPath = p; }
+    void setBleEnabled(bool enabled) { bleEnabled = enabled; }
+    void setBleDeviceName(const std::string& name) { bleDeviceName = name; }
 
     // Accesseurs pour les informations du dernier coffre chargé
     const std::string& getLoadedVaultPath() const { return loadedVaultPath; }
