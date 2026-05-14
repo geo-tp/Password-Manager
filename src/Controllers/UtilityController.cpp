@@ -37,6 +37,12 @@ bool UtilityController::handleUsbTyping(std::string sendString) {
     display.subMessage("Send to USB", 0);
     usbService.sendString(sendString);
     ledService.clearLed();
+
+    bool submit = confirmationSelector.select("Submit?", "OK: Enter | ESC: Skip");
+    if (submit) {
+        usbService.sendKey(0xB0); // KEY_RETURN
+    }
+
     return true;
 }
 
