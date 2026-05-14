@@ -13,6 +13,7 @@ public:
     void begin();
     void end();
     void sendString(const std::string& text);
+    void sendKey(uint8_t key);
     void sendChunkedString(const std::string& data, size_t chunkSize=128, unsigned long delayBetweenChunks=50);
     bool isReady() const;
     void setLayout(const uint8_t* newLayout);

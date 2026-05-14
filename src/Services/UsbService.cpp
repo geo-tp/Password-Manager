@@ -32,6 +32,13 @@ void UsbService::sendString(const std::string& text) {
     }
 }
 
+void UsbService::sendKey(uint8_t key) {
+    while (millis() - initTime < 1500) {
+        delay(10);
+    }
+    keyboard.write(key);
+}
+
 bool UsbService::isReady() const {
     return initialized;
 }
