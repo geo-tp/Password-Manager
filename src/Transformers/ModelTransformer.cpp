@@ -19,8 +19,8 @@ std::vector<std::string> ModelTransformer::toStrings(const std::vector<Category>
 
 std::vector<std::string> ModelTransformer::toStrings(const Entry& entry) {
     return {
-        entry.getUsername(),
         entry.getPassword(),
+        entry.getUsername(),
         entry.getNotes()
     };
 }

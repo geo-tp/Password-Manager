@@ -63,6 +63,21 @@ void test_get_all_entries() {
     TEST_ASSERT_EQUAL_STRING("Service2", entries[1].getServiceName().c_str());
 }
 
+void test_delete_only_selected_duplicate_entry() {
+    EntryRepository repository;
+    EntryService service(repository);
+    Entry first("1", "Same", "user", "pass-one", 0);
+    Entry second("2", "Same", "user", "pass-two", 0);
+    service.addEntry(first);
+    service.addEntry(second);
+
+    service.deleteEntry(second);
+
+    auto entries = service.getAllEntries();
+    TEST_ASSERT_EQUAL(1, entries.size());
+    TEST_ASSERT_EQUAL_STRING("1", entries[0].getId().c_str());
+}
+
 void test_updateField() {
     EntryRepository repository;
     EntryService service(repository);

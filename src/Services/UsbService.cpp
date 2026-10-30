@@ -32,6 +32,11 @@ void UsbService::sendString(const std::string& text) {
     }
 }
 
+void UsbService::sendStringAndEnter(const std::string& text) {
+    sendString(text);
+    keyboard.write(KEY_RETURN);
+}
+
 bool UsbService::isReady() const {
     return initialized;
 }

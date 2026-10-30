@@ -47,8 +47,8 @@ void test_transform_single_entry_to_strings() {
     auto strings = ModelTransformer::toStrings(entry);
 
     TEST_ASSERT_EQUAL(3, strings.size());
-    TEST_ASSERT_EQUAL_STRING("User1", strings[0].c_str());
-    TEST_ASSERT_EQUAL_STRING("encryptedPass1", strings[1].c_str());
+    TEST_ASSERT_EQUAL_STRING("encryptedPass1", strings[0].c_str());
+    TEST_ASSERT_EQUAL_STRING("User1", strings[1].c_str());
     TEST_ASSERT_EQUAL_STRING("This is a note", strings[2].c_str());
 }
 

@@ -139,7 +139,7 @@ void test_handleEntryDeletion() {
     entryService.addEntry(Entry("Yahoo", "doe", "word", "note2"));
 
     // Input mock, last entry, first at selection
-    mockInput.enqueueKey(KEY_OK); // Select first entry, in this case Yahoo
+    mockInput.enqueueKey(KEY_DEL); // Delete highlighted entry, in this case Yahoo
     mockInput.enqueueKey(KEY_OK); // Confirm deletion
     mockInput.enqueueKey(KEY_ESC_CUSTOM);
 

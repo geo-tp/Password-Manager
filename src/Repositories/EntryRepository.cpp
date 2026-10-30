@@ -23,16 +23,21 @@ const Entry& EntryRepository::findEntryById(const std::string& id) const {
 }
 
 bool EntryRepository::deleteEntry(const Entry& entry) {
-    auto it = std::remove_if(entries.begin(), entries.end(),
-                             [&entry](const Entry& currentEntry) {
-                                 return currentEntry.getServiceName() == entry.getServiceName() &&
-                                        currentEntry.getUsername() == entry.getUsername();
-                             });
-    if (it != entries.end()) {
-        entries.erase(it, entries.end());
-        return true;
+    auto it = std::find_if(entries.begin(), entries.end(),
+                           [&entry](const Entry& currentEntry) {
+                               if (!entry.getId().empty() && !currentEntry.getId().empty()) {
+                                   return currentEntry.getId() == entry.getId();
+                               }
+                               return currentEntry.getServiceName() == entry.getServiceName() &&
+                                      currentEntry.getUsername() == entry.getUsername() &&
+                                      currentEntry.getPassword() == entry.getPassword() &&
+                                      currentEntry.getNotes() == entry.getNotes();
+                           });
+    if (it == entries.end()) {
+        return false;
     }
-    return false;
+    entries.erase(it);
+    return true;
 }
 
 bool EntryRepository::updateEntry(const Entry& oldEntry, const Entry& newEntry) {

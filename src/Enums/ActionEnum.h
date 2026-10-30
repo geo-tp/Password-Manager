@@ -25,6 +25,7 @@ enum class ActionEnum {
 
     // App-level actions
     SendToUsb,
+    SendToUsbAndEnter,
     ShowHelp,
     UpdateSettings
 };
@@ -45,6 +46,7 @@ public:
             {ActionEnum::SelectField, "Select Field"},
             {ActionEnum::UpdateField, "Update Field"},
             {ActionEnum::SendToUsb, "Send to USB"},
+            {ActionEnum::SendToUsbAndEnter, "Send to USB + Enter"},
             {ActionEnum::ShowHelp, "Show Help"},
             {ActionEnum::UpdateSettings, "Settings"}
         };

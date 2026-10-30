@@ -19,8 +19,18 @@ char CardputerInput::handler() {
         if (M5Cardputer.Keyboard.isPressed()) {
             Keyboard_Class::KeysState status = M5Cardputer.Keyboard.keysState();
 
-            if (status.enter) { // go to next menu
-                return KEY_OK;
+            if (status.enter) { // short OK or one-second long OK
+                auto pressedAt = millis();
+                while (true) {
+                    M5Cardputer.update();
+                    if (!M5Cardputer.Keyboard.keysState().enter) {
+                        return KEY_OK;
+                    }
+                    if (millis() - pressedAt >= 1000) {
+                        return KEY_OK_LONG;
+                    }
+                    delay(10);
+                }
             }
             if (status.del) { 
                 return KEY_DEL;
@@ -48,13 +58,10 @@ char CardputerInput::handler() {
 }
 
 void CardputerInput::waitPress() {
-  while(1){
+  while (true) {
     M5Cardputer.update();
-    if (M5Cardputer.Keyboard.isChange()) {
-      if (M5Cardputer.Keyboard.isPressed()) {
-        Keyboard_Class::KeysState status = M5Cardputer.Keyboard.keysState();
-        return;
-      }
+    if (M5Cardputer.BtnA.isPressed() || M5Cardputer.Keyboard.isPressed()) {
+      return;
     }
     delay(10);
   }

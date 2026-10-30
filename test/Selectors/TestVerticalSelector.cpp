@@ -51,6 +51,54 @@ void test_vertical_selector_cancel() {
     TEST_ASSERT_EQUAL(-1, selectedIndex); // Option 3 is selected
 }
 
+void test_vertical_selector_delete_action() {
+    MockView mockView;
+    MockInput mockInput;
+    InactivityManager manager(mockView);
+    VerticalSelector verticalSelector(mockView, mockInput, manager);
+
+    std::vector<std::string> options = {"Gmail", "Dummy Password"};
+
+    mockInput.enqueueKey(KEY_ARROW_DOWN);
+    mockInput.enqueueKey(KEY_DEL);
+
+    bool deleteRequested = false;
+    int selectedIndex = verticalSelector.select("My Passwords", options, true, true, {}, {}, false, true, &deleteRequested);
+
+    TEST_ASSERT_EQUAL(1, selectedIndex);
+    TEST_ASSERT_TRUE(deleteRequested);
+    TEST_ASSERT_TRUE(mockView.displayedOptionLabels.empty());
+}
+
+void test_vertical_selector_delete_empty_list_is_safe() {
+    MockView mockView;
+    MockInput mockInput;
+    InactivityManager manager(mockView);
+    VerticalSelector verticalSelector(mockView, mockInput, manager);
+    bool deleteRequested = false;
+
+    mockInput.enqueueKey(KEY_DEL);
+    mockInput.enqueueKey(KEY_ARROW_LEFT);
+
+    int selectedIndex = verticalSelector.select("My Passwords", {}, true, true, {}, {}, false, true, &deleteRequested);
+
+    TEST_ASSERT_EQUAL(-1, selectedIndex);
+    TEST_ASSERT_FALSE(deleteRequested);
+}
+
+void test_vertical_selector_selects_highlighted_duplicate() {
+    MockView mockView;
+    MockInput mockInput;
+    InactivityManager manager(mockView);
+    VerticalSelector verticalSelector(mockView, mockInput, manager);
+    std::vector<std::string> options = {"Duplicate", "Duplicate"};
+
+    mockInput.enqueueKey(KEY_ARROW_DOWN);
+    mockInput.enqueueKey(KEY_OK);
+
+    TEST_ASSERT_EQUAL(1, verticalSelector.select("My Passwords", options));
+}
+
 void test_vertical_selector_shortcut() {
     MockView mockView;
     MockInput mockInput;

@@ -29,6 +29,8 @@ ActionEnum FieldActionSelector::select(const std::string& label, const std::stri
                 return ActionEnum::None;
             case KEY_OK:
                 return ActionEnum::SendToUsb;
+            case KEY_OK_LONG:
+                return ActionEnum::SendToUsbAndEnter;
             case 'm':
                 return ActionEnum::UpdateField;
         }

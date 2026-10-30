@@ -25,6 +25,19 @@ void test_field_action_selector_send_to_usb() {
     TEST_ASSERT_TRUE(mockView.valueCalled);
 }
 
+void test_field_action_selector_send_to_usb_and_enter() {
+    MockView mockView;
+    MockInput mockInput;
+    InactivityManager inactivityManager(mockView);
+    FieldActionSelector fieldActionSelector(mockView, mockInput, inactivityManager);
+
+    mockInput.enqueueKey(KEY_OK_LONG);
+
+    ActionEnum action = fieldActionSelector.select("Pass", "secret");
+
+    TEST_ASSERT_EQUAL(ActionEnum::SendToUsbAndEnter, action);
+}
+
 void test_field_action_selector_update_field() {
     MockView mockView;
     MockInput mockInput;

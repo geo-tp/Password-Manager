@@ -39,11 +39,12 @@ public:
 
     ActionEnum actionFieldSelected(Field field);
 
-    Entry handleEntrySelection();
+    Entry handleEntrySelection(bool allowDelete = false, bool* deleteRequested = nullptr);
     Field handleFieldSelection(Entry& selectedEntry);
 
     bool handleEntryCreation();
     bool handleEntryUpdate(Entry& entry, Field& field);
+    bool handleEntryDeletion(const Entry& entry);
     bool handleEntryDeletion();
 
 private:

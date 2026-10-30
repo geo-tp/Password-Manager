@@ -33,11 +33,11 @@ ActionEnum EntryController::actionFieldSelected(Field field) {
     return action;
 }
 
-Entry EntryController::handleEntrySelection() {
+Entry EntryController::handleEntrySelection(bool allowDelete, bool* deleteRequested) {
     auto entries = entryService.getAllEntries();
     std::reverse(entries.begin(), entries.end()); // last created in first
     auto labels = modelTransformer.toStrings(entries);
-    auto selectedIndex = verticalSelector.select(entryService.getVaultName(), labels, true, true);
+    auto selectedIndex = verticalSelector.select(entryService.getVaultName(), labels, true, true, {}, {}, false, true, allowDelete ? deleteRequested : nullptr);
 
     if (selectedIndex == -1) {
         return entryService.getEmptyEntry();
@@ -48,8 +48,8 @@ Entry EntryController::handleEntrySelection() {
 
 Field EntryController::handleFieldSelection(Entry& selectedEntry) {
     auto fieldValues = modelTransformer.toStrings(selectedEntry);
-    std::vector<std::string> fieldLabels = {"User", "Pass", "Note"};
-    std::vector<std::string> shortcuts = {"U", "P", "N"};
+    std::vector<std::string> fieldLabels = {"Pass", "User", "Note"};
+    std::vector<std::string> shortcuts = {"P", "U", "N"};
     auto selectedIndex = verticalSelector.select(selectedEntry.getServiceName(), fieldValues, true, false, fieldLabels, shortcuts, true);
 
     if (selectedIndex == -1) {
@@ -116,11 +116,21 @@ bool EntryController::handleEntryUpdate(Entry& entry, Field& field) {
     return true;
 }
 
+bool EntryController::handleEntryDeletion(const Entry& entry) {
+    auto confirmation = confirmationSelector.select("Erase Password", "Delete " + entry.getServiceName() + " ?");
+    if (!confirmation) {
+        return false;
+    }
+
+    entryService.deleteEntry(entry);
+    display.subMessage("Saving...", 0);
+    return true;
+}
+
 bool EntryController::handleEntryDeletion() {
-    size_t selectedIndex;
     bool entryUpdated = false;
 
-    while (selectedIndex != 1) {
+    while (true) {
         auto entries = entryService.getAllEntries();
         std::reverse(entries.begin(), entries.end()); // last created in first
         auto labels = modelTransformer.toStrings(entries);

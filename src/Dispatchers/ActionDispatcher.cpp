@@ -71,15 +71,23 @@ void ActionDispatcher::executeAction(ActionEnum action) {
             }
             break;
 
-        case ActionEnum::SelectEntry:
-            selectedEntry = provider.getEntryController().handleEntrySelection();
+        case ActionEnum::SelectEntry: {
+            bool deleteRequested = false;
+            selectedEntry = provider.getEntryController().handleEntrySelection(true, &deleteRequested);
 
             if (selectedEntry.empty()) {
                 context = ContextEnum::VaultSelected;
+            } else if (deleteRequested) {
+                confirmation = provider.getEntryController().handleEntryDeletion(selectedEntry);
+                if (confirmation) {
+                    provider.getVaultController().handleVaultSave();
+                }
+                context = ContextEnum::VaultSelected;
             } else {
-                context = ContextEnum::EntrySelected;    
+                context = ContextEnum::EntrySelected;
             }
             break;
+        }
 
         case ActionEnum::CreateEntry:
             confirmation = provider.getEntryController().handleEntryCreation();
@@ -115,6 +123,10 @@ void ActionDispatcher::executeAction(ActionEnum action) {
         
         case ActionEnum::SendToUsb:
             provider.getUtilityController().handleUsbTyping(selectedField.getValue());
+            break;
+
+        case ActionEnum::SendToUsbAndEnter:
+            provider.getUtilityController().handleUsbTyping(selectedField.getValue(), true);
             break;
 
         case ActionEnum::UpdateSettings:

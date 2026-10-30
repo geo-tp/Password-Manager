@@ -34,7 +34,7 @@ public:
                     TimeTransformer& timeTransformer);
 
 
-    bool handleUsbTyping(std::string sendString);
+    bool handleUsbTyping(std::string sendString, bool pressEnter = false);
     bool handleKeyboardInitialization();
     bool handleGeneralSettings();
     void handleLoadNvs();

@@ -39,6 +39,7 @@ void setup() {
     RUN_TEST(test_add_and_find_entry);
     RUN_TEST(test_update_entry);
     RUN_TEST(test_get_all_entries);
+    RUN_TEST(test_delete_only_selected_duplicate_entry);
     RUN_TEST(test_updateField);
     RUN_TEST(test_maxSavedPasswords);
 
@@ -88,6 +89,9 @@ void setup() {
     // VerticalSelector
     RUN_TEST(test_vertical_selector_confirm);
     RUN_TEST(test_vertical_selector_cancel);
+    RUN_TEST(test_vertical_selector_delete_action);
+    RUN_TEST(test_vertical_selector_delete_empty_list_is_safe);
+    RUN_TEST(test_vertical_selector_selects_highlighted_duplicate);
     RUN_TEST(test_vertical_selector_shortcut);
 
     // HorizontalSelector
@@ -100,6 +104,7 @@ void setup() {
 
     // FieldActionSelector
     RUN_TEST(test_field_action_selector_send_to_usb);
+    RUN_TEST(test_field_action_selector_send_to_usb_and_enter);
     RUN_TEST(test_field_action_selector_update_field);
     RUN_TEST(test_field_action_selector_cancel);
 

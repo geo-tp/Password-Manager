@@ -32,10 +32,14 @@ void UtilityController::handleWelcome() {
     display.setBrightness(brightness);
 }
 
-bool UtilityController::handleUsbTyping(std::string sendString) {
+bool UtilityController::handleUsbTyping(std::string sendString, bool pressEnter) {
     ledService.showLed();
-    display.subMessage("Send to USB", 0);
-    usbService.sendString(sendString);
+    display.subMessage(pressEnter ? "Send + Enter" : "Send to USB", 0);
+    if (pressEnter) {
+        usbService.sendStringAndEnter(sendString);
+    } else {
+        usbService.sendString(sendString);
+    }
     ledService.clearLed();
     return true;
 }

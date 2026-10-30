@@ -14,14 +14,18 @@ int VerticalSelector::select(
         const std::vector<std::string>& options2,
         const std::vector<std::string>& shortcuts, 
         bool visibleMention,
-        bool handleInactivity) 
+        bool handleInactivity,
+        bool* deleteRequested)
 {
+    if (deleteRequested) {
+        *deleteRequested = false;
+    }
     int currentIndex = 0;
     int lastIndex = -1;
     int lastQuerySize = 0;
     char key = KEY_NONE;
     std::string searchQuery;
-    std::vector<std::string> filteredOptions = options;
+    std::vector<size_t> filteredIndices = filterOptionIndices(options, searchQuery);
     inactivityManager.reset();
 
     while (true) {
@@ -33,8 +37,16 @@ int VerticalSelector::select(
 
         // Display the current options and selection
         if (lastIndex != currentIndex || lastQuerySize != searchQuery.size()) {
+            std::vector<std::string> filteredOptions;
+            std::vector<std::string> filteredOptions2;
+            std::vector<std::string> filteredShortcuts;
+            for (auto index : filteredIndices) {
+                filteredOptions.push_back(options[index]);
+                if (!options2.empty()) { filteredOptions2.push_back(options2[index]); }
+                if (!shortcuts.empty()) { filteredShortcuts.push_back(shortcuts[index]); }
+            }
             display.topBar(searchQuery.empty() ? title : searchQuery, subMenu, searchBar);
-            display.verticalSelection(filteredOptions, currentIndex, 4, options2, shortcuts, visibleMention);
+            display.verticalSelection(filteredOptions, currentIndex, 4, filteredOptions2, filteredShortcuts, visibleMention);
             lastIndex = currentIndex;
             lastQuerySize = searchQuery.size();
         }
@@ -56,37 +68,37 @@ int VerticalSelector::select(
 
         switch (key) {
             case KEY_ARROW_UP:
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : filteredOptions.size() - 1;
+                if (!filteredIndices.empty()) {
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : filteredIndices.size() - 1;
+                }
                 break;
             case KEY_ARROW_DOWN:
-                currentIndex = (currentIndex < filteredOptions.size() - 1) ? currentIndex + 1 : 0;
+                if (!filteredIndices.empty()) {
+                    currentIndex = (currentIndex < filteredIndices.size() - 1) ? currentIndex + 1 : 0;
+                }
                 break;
             case KEY_OK:
-                for (size_t i = 0; i < options.size(); ++i) {
-                    if (options[i] == filteredOptions[currentIndex]) {
-                        return i;
-                    }
-                }
+                if (!filteredIndices.empty()) { return filteredIndices[currentIndex]; }
                 break;
             case KEY_ESC_CUSTOM:
             case KEY_ARROW_LEFT: // Back
                 return -1;
-            case KEY_DEL: // Backspace for text search
+            case KEY_DEL:
                 if (searchBar && !searchQuery.empty()) {
                     searchQuery.pop_back();
-                    filteredOptions = filterOptions(options, searchQuery);
+                    filteredIndices = filterOptionIndices(options, searchQuery);
                     currentIndex = 0;
-                } else {
-                    filteredOptions = options;
+                } else if (deleteRequested && !filteredIndices.empty()) {
+                    *deleteRequested = true;
+                    return filteredIndices[currentIndex];
                 }
                 break;
             default:
                 if (searchBar && std::isalnum(key)) {
                     searchQuery += key;
-                    filteredOptions = filterOptions(options, searchQuery);
+                    filteredIndices = filterOptionIndices(options, searchQuery);
                     currentIndex = 0;
                 }
-                
                 break;
         }
     }
@@ -98,12 +110,12 @@ std::string VerticalSelector::toLowerCase(const std::string& input) {
     return result;
 }
 
-std::vector<std::string> VerticalSelector::filterOptions(const std::vector<std::string>& options, const std::string& query) {
-    std::vector<std::string> filtered;
+std::vector<size_t> VerticalSelector::filterOptionIndices(const std::vector<std::string>& options, const std::string& query) {
+    std::vector<size_t> filtered;
     std::string lowerQuery = toLowerCase(query);
-    for (const auto& option : options) {
-        if (toLowerCase(option).find(lowerQuery) != std::string::npos) {
-            filtered.push_back(option);
+    for (size_t i = 0; i < options.size(); ++i) {
+        if (toLowerCase(options[i]).find(lowerQuery) != std::string::npos) {
+            filtered.push_back(i);
         }
     }
     return filtered;

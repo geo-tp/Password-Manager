@@ -47,6 +47,7 @@ public:
         bool visibleMention) override {
 
         displayedOptions = options;
+        displayedOptionLabels = optionLabels;
         lastSelectedIndex = selectedIndex;
         this->visibleRows = visibleRows;
         verticalSelectionCalled = true;
@@ -81,6 +82,7 @@ public:
     bool submenu = false;
     bool searchBar = false;
     std::vector<std::string> displayedOptions;
+    std::vector<std::string> displayedOptionLabels;
     uint16_t lastSelectedIndex = -1;
     size_t visibleRows = 0;
     std::string message;
